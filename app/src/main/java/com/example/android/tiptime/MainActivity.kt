@@ -1,8 +1,7 @@
 package com.example.android.tiptime
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 import com.example.android.tiptime.databinding.ActivityMainBinding
 import java.text.NumberFormat
 import kotlin.math.ceil
@@ -11,7 +10,7 @@ class MainActivity : AppCompatActivity() {
 
     // mendeklarasikan variabel level teratas di class untuk objek binding
     // keyword "lateinit" digunakan sebagai jaminan bahwa kode Anda akan melakukan inisialisasi variabel sebelum menggunakannya
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,16 +47,14 @@ class MainActivity : AppCompatActivity() {
         // ubah String menjadi Double jika bisa, atau Null jika terjadi error
         val cost = stringInTextField.toDoubleOrNull()
         // jika costOfService tidak diisi double, maka keluar dari fungsi calculateTip()
-        if (cost == null){
-            // menghapus jumlah tip sebelumnya, sebelum menampilkan hasil calculateTip() dari costOfService yang baru
-            binding.tipResult.text = ""
+        if (cost == null || cost == 0.0){
+            displayTip(0.0)
             // Instruksi "return" berarti keluar dari metode tersebut tanpa mengeksekusi instruksi lainnya
             return
         }
 
         // mendapatkan persentase tip dari input Radio yg dipilih user
-        val selectedId = binding.tipOptions.checkedRadioButtonId
-        val tipPercentage = when (selectedId) {
+        val tipPercentage = when (binding.tipOptions.checkedRadioButtonId) {
             R.id.option_twenty_percent -> 0.20
             R.id.option_eighteen_percent -> 0.18
             else -> 0.15
@@ -65,12 +62,14 @@ class MainActivity : AppCompatActivity() {
 
         // menghitung tip dan membulatkannya
         var tip = tipPercentage * cost
-        val roundUp = binding.roundUpSwitch.isChecked
-        if (roundUp) {
+        if (binding.roundUpSwitch.isChecked) {
             tip = ceil(tip)
         }
 
-        // memmformat tip sesuai mata uang
+        displayTip(tip)
+    }
+    // memmformat tip sesuai mata uang
+    fun displayTip(tip : Double) {
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
     }
