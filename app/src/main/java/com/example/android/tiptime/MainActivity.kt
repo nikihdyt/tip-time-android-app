@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.example.android.tiptime.databinding.ActivityMainBinding
+import java.text.NumberFormat
+import kotlin.math.ceil
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,5 +37,34 @@ class MainActivity : AppCompatActivity() {
         // Nama class binding dibuat dengan mengonversi nama file XML menjadi camel case dan menambahkan kata "Binding" ke bagian akhirnya.
         // Demikian pula, referensi untuk setiap tampilan dibuat dengan menghapus garis bawah dan mengonversi nama tampilan menjadi camel case.
         // Misalnya, activity_main.xml menjadi ActivityMainBinding, dan Anda dapat mengakses @id/text_view sebagai binding.textView.
+
+        binding.calculateButton.setOnClickListener{ calculateTip() }
+    }
+
+    private fun calculateTip() {
+        // ".text" mengambil text input dari costOfService,
+        // ".toString" digunakan utk mengkonversi text yg bertipe Editable menjadi bertipe String
+        val stringInTextField = binding.costOfService.text.toString()
+        // ubah String menjadi Double agar bisa dioperasikan matematika
+        val cost = stringInTextField.toDouble()
+
+        // mendapatkan persentase tip dari input Radio yg dipilih user
+        val selectedId = binding.tipOptions.checkedRadioButtonId
+        val tipPercentage = when (selectedId) {
+            R.id.option_twenty_percent -> 0.20
+            R.id.option_eighteen_percent -> 0.18
+            else -> 0.15
+        }
+
+        // menghitung tip dan membulatkannya
+        var tip = tipPercentage * cost
+        val roundUp = binding.roundUpSwitch.isChecked
+        if (roundUp) {
+            tip = ceil(tip)
+        }
+
+        // memmformat tip sesuai mata uang
+        val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
+        binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
     }
 }
