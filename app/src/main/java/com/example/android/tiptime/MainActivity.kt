@@ -45,8 +45,12 @@ class MainActivity : AppCompatActivity() {
         // ".text" mengambil text input dari costOfService,
         // ".toString" digunakan utk mengkonversi text yg bertipe Editable menjadi bertipe String
         val stringInTextField = binding.costOfService.text.toString()
-        // ubah String menjadi Double agar bisa dioperasikan matematika
-        val cost = stringInTextField.toDouble()
+        // ubah String menjadi Double jika bisa, atau Null jika terjadi error
+        val cost = stringInTextField.toDoubleOrNull()
+        // jika costOfService tidak diisi double, maka keluar dari fungsi calculateTip()
+        if (cost == null){
+            return
+        }
 
         // mendapatkan persentase tip dari input Radio yg dipilih user
         val selectedId = binding.tipOptions.checkedRadioButtonId
