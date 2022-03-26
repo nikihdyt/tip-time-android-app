@@ -49,6 +49,9 @@ class MainActivity : AppCompatActivity() {
         val cost = stringInTextField.toDoubleOrNull()
         // jika costOfService tidak diisi double, maka keluar dari fungsi calculateTip()
         if (cost == null){
+            // menghapus jumlah tip sebelumnya, sebelum menampilkan hasil calculateTip() dari costOfService yang baru
+            binding.tipResult.text = ""
+            // Instruksi "return" berarti keluar dari metode tersebut tanpa mengeksekusi instruksi lainnya
             return
         }
 
