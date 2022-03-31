@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         // binding telah diterapkan.
         // sekarang, referensi terhadap View tidak harus menggunakan findViewById(), namun Objek binding secara otomatis menentukan referensi untuk setiap View dalam aplikasi Anda yang memiliki ID
 
-        binding.calculateButton.setOnClickListener{ calculateTip() }
+        binding.calculateButton.setOnClickListener { calculateTip() }
 
         // Set up key listener ke EditText agar menyembunyakan keyboard saat tombol "enter" ditekan
         binding.costOfServiceEditText.setOnKeyListener { view, keyCode, _ ->
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         // ubah String menjadi Double jika bisa, atau Null jika terjadi error
         val cost = stringInTextField.toDoubleOrNull()
         // jika costOfService tidak diisi double, maka keluar dari fungsi calculateTip()
-        if (cost == null || cost == 0.0){
+        if (cost == null || cost == 0.0) {
             displayTip(0.0)
             // Instruksi "return" berarti keluar dari metode tersebut tanpa mengeksekusi instruksi lainnya
             return
@@ -66,11 +66,13 @@ class MainActivity : AppCompatActivity() {
 
         displayTip(tip)
     }
+
     // memmformat tip sesuai mata uang
-    fun displayTip(tip : Double) {
+    fun displayTip(tip: Double) {
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
     }
+
     // Key listener untuk menyembunyikan keyboard saat tombol "Enter" ditekan
     private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
         if (keyCode == KeyEvent.KEYCODE_ENTER) {
