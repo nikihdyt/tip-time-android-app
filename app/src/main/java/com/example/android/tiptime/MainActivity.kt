@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     private fun calculateTip() {
         // ".text" mengambil text input dari costOfService,
         // ".toString" digunakan utk mengkonversi text yg bertipe Editable menjadi bertipe String
-        val stringInTextField = binding.costOfService.text.toString()
+        val stringInTextField = binding.costOfServiceEditText.text.toString()
         // ubah String menjadi Double jika bisa, atau Null jika terjadi error
         val cost = stringInTextField.toDoubleOrNull()
         // jika costOfService tidak diisi double, maka keluar dari fungsi calculateTip()
