@@ -1,7 +1,12 @@
 package com.example.android.tiptime
 
+import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import com.example.android.tiptime.databinding.ActivityMainBinding
 import java.text.NumberFormat
 import kotlin.math.ceil
@@ -38,6 +43,14 @@ class MainActivity : AppCompatActivity() {
         // Misalnya, activity_main.xml menjadi ActivityMainBinding, dan Anda dapat mengakses @id/text_view sebagai binding.textView.
 
         binding.calculateButton.setOnClickListener{ calculateTip() }
+
+        // Set up key listener ke EditText agar menyembunyakan keyboard saat tombol "enter" ditekan
+        binding.costOfServiceEditText.setOnKeyListener { view, keyCode, _ ->
+            handleKeyEvent(
+                view,
+                keyCode
+            )
+        }
     }
 
     private fun calculateTip() {
@@ -72,5 +85,16 @@ class MainActivity : AppCompatActivity() {
     fun displayTip(tip : Double) {
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
         binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+    }
+    // Key listener untuk menyembunyikan keyboard saat tombol "Enter" ditekan
+    private fun handleKeyEvent(view: View, keyCode: Int): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+            // Hide the keyboard
+            val inputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            return true
+        }
+        return false
     }
 }
